@@ -5,7 +5,7 @@ var guard = require('./guard');
 
 
 router.get('/', guard, function (req, res, next) {
-    con.query('select * from users', (err, result, fields) => {
+    con.query('select * from users where level=\'user\'', (err, result, fields) => {
         if (!err)
             res.json(result)
         else
