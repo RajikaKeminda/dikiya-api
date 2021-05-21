@@ -10,7 +10,7 @@ router.post('/', function (req, res, next) {
             jwt.sign({ pwd: modal.password, name: modal.email }, process.env.TOKEN_SECRET, (err, token) => {
                 console.log(token)
                 if (err) return res.json(403)
-                res.json({ token: token, id: modal.id, level: modal.level })
+                res.json({ token: token, id: modal.id, level: modal.level, type: modal.type })
             })
         } else {
             res.json({ status: 'err' })

@@ -7,7 +7,7 @@ router.post('/', function (req, res, next) {
         if (!err)
             res.json('success')
         else
-            res.json('error')
+            res.json(err)
     })
 });
 
