@@ -5,7 +5,7 @@ var guard = require('./guard');
 
 
 router.post('/', guard, function (req, res, next) {
-    con.query('SELECT * FROM ' + req.body[table], (err, result, fields) => {
+    con.query('SELECT * FROM ' + req.body['table'], (err, result, fields) => {
         if (!err)
             res.json(result)
         else
