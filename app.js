@@ -7,6 +7,18 @@ var core = require('cors');
 const fileUpload = require('express-fileupload');
 require('dotenv').config();
 
+
+var con = require('./db').connection;
+
+
+
+con.connect((err) => {
+  if (!err)
+    console.log('connection success');
+  else
+    console.log('connection failed' + JSON.stringify(err, undefined, 2));
+})
+
 var indexRouter = require('./routes/index');
 var loginRouter = require('./routes/auth');
 var registerRouter = require('./routes/register');
@@ -30,6 +42,9 @@ var updateRouter = require('./routes/update');
 var insertRouter = require('./routes/insert');
 var selectRouter = require('./routes/select');
 var deleteRouter = require('./routes/delete');
+var forgetRouter = require('./routes/forget');
+var resetPassword = require('./routes/reset_password');
+const { env } = require('process');
 
 var app = express();
 
@@ -45,28 +60,37 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(core());
 app.use(fileUpload());
 
-app.use('/login', loginRouter);
-app.use('/addProduct', addProductRouter);
-app.use('/register', registerRouter);
-app.use('/products', productsRouter);
-app.use('/productsById', productsByIdRouter);
-app.use('/users', usersRouter);
-app.use('/userProducts', userProductsRouter);
-app.use('/search', searchRouter);
-app.use('/commonSearch', commonSearchRouter);
-app.use('/getProduct', getProductRouter);
-app.use('/getUser', getUserRouter);
-app.use('/deleteImage', deleteImageRouter);
-app.use('/uploadImage', uploadImageRouter);
-app.use('/uploadProfile', uploadProfileImageRouter);
-app.use('/updateProduct', updateProductRouter);
-app.use('/updateProfile', updateProfileRouter);
-app.use('/deleteProduct', deleteProductRouter);
-app.use('/download', downloadImagesRouter);
-app.use('/update', updateRouter);
-app.use('/insert', insertRouter);
-app.use('/select', selectRouter);
-app.use('/delete', deleteRouter);
+app.use('/api/v1/login', loginRouter);
+app.use('/api/v1/addProduct', addProductRouter);
+app.use('/api/v1/register', registerRouter);
+app.use('/api/v1/products', productsRouter);
+app.use('/api/v1/productsById', productsByIdRouter);
+app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/userProducts', userProductsRouter);
+app.use('/api/v1/search', searchRouter);
+app.use('/api/v1/commonSearch', commonSearchRouter);
+app.use('/api/v1/getProduct', getProductRouter);
+app.use('/api/v1/getUser', getUserRouter);
+app.use('/api/v1/deleteImage', deleteImageRouter);
+app.use('/api/v1/uploadImage', uploadImageRouter);
+app.use('/api/v1/uploadProfile', uploadProfileImageRouter);
+app.use('/api/v1/updateProduct', updateProductRouter);
+app.use('/api/v1/updateProfile', updateProfileRouter);
+app.use('/api/v1/deleteProduct', deleteProductRouter);
+app.use('/api/v1/download', downloadImagesRouter);
+app.use('/api/v1/update', updateRouter);
+app.use('/api/v1/insert', insertRouter);
+app.use('/api/v1/select', selectRouter);
+app.use('/api/v1/delete', deleteRouter);
+app.use('/api/v1/forget', forgetRouter);
+app.use('/api/v1/resetPassword', resetPassword);
+app.get('/api/v1',(req, res)=>{
+  res.json('service running');
+});
+
+app.get('/api/v1/test',(req, res)=>{
+  res.json('service running');
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -83,5 +107,7 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+app.listen(3000);
 
 module.exports = app;
